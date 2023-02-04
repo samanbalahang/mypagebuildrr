@@ -1,0 +1,16 @@
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td,
+table.dataTable tbody td
+{
+    direction: rtl !important;
+    text-align: center !important;
+    border-right:1px solid var(--base_bg);
+}
+table.dataTable tbody tr:nth-child(odd){
+    background-color: var(--bg-hover-dark);
+}
+table.dataTable tbody tr:nth-child(odd):hover{
+    background-color: var(--bg-hover-light);
+}   

@@ -1,0 +1,12 @@
+#leftside{
+    color:var(--oposite-color) !important;
+}
+.accordion-body {
+    padding: 0.2rem 1rem 0 0;
+}
+.accordion-button:focus {
+    z-index: 3;
+    border-color:var(--bg-DarkGold);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
