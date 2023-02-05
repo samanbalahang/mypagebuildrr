@@ -13,7 +13,7 @@
         <section id="mainForm">
             <section class="formTitle">
                 <h1>
-                    مدیاها
+                    تمپلیت
                 </h1>
             </section>
             <section class="addbtn my-3">
@@ -134,28 +134,28 @@
         است که براساس هر کدام مشخص میشود روی کدام عنصر کلیک شده است.
         */
         if ($("#templateFather").attr("fatherType") == "row") {
-            $("#templateFather #row").addClass("disabled");
-            $("#templateFather #headings").addClass("disabled");
-            $("#templateFather #pragraph").addClass("disabled");
-            $("#templateFather #lists").addClass("disabled");
-            $("#templateFather #image").addClass("disabled");
-            $("#templateFather #seprator").addClass("disabled");
-            $("#templateFather #slider").addClass("disabled");
-            $("#templateFather #tables").addClass("disabled");
-            $("#templateFather #textTemplates").addClass("disabled");
-            $("#templateFather #nav").addClass("disabled");
-            $("#templateFather #forms").addClass("disabled");
-            $("#templateFather #reviews").addClass("disabled");
-            $("#templateFather #column").addClass("disabled");
-        } else if ($("#templateFather").attr("fatherType") == "container") {
-            $("#templateFather #container").addClass("disabled");
-            $("#templateFather #fluid").addClass("disabled");
-        } else if ($("#templateFather").attr("fatherType") == "fluid") {
-            $("#templateFather #container").addClass("disabled");
-            $("#templateFather #fluid").addClass("disabled");
-        } else if ($("#templateFather").attr("fatherType") == "column") {
-            $("#templateFather #container").addClass("disabled");
-            $("#templateFather #fluid").addClass("disabled");
+        //     $("#templateFather #row").addClass("disabled");
+        //     $("#templateFather #headings").addClass("disabled");
+        //     $("#templateFather #pragraph").addClass("disabled");
+        //     $("#templateFather #lists").addClass("disabled");
+        //     $("#templateFather #image").addClass("disabled");
+        //     $("#templateFather #seprator").addClass("disabled");
+        //     $("#templateFather #slider").addClass("disabled");
+        //     $("#templateFather #tables").addClass("disabled");
+        //     $("#templateFather #textTemplates").addClass("disabled");
+        //     $("#templateFather #nav").addClass("disabled");
+        //     $("#templateFather #forms").addClass("disabled");
+        //     $("#templateFather #reviews").addClass("disabled");
+        //     $("#templateFather #column").addClass("disabled");
+        // } else if ($("#templateFather").attr("fatherType") == "container") {
+        //     $("#templateFather #container").addClass("disabled");
+        //     $("#templateFather #fluid").addClass("disabled");
+        // } else if ($("#templateFather").attr("fatherType") == "fluid") {
+        //     $("#templateFather #container").addClass("disabled");
+        //     $("#templateFather #fluid").addClass("disabled");
+        // } else if ($("#templateFather").attr("fatherType") == "column") {
+        //     $("#templateFather #container").addClass("disabled");
+        //     $("#templateFather #fluid").addClass("disabled");
         }
     }
 
@@ -188,12 +188,14 @@
         */
         sectionPartClicked(fatherId, child)
     }
+
     // تعیین میکند که در مودال روی کدام عنصر کلیک شده است
     function whichPartClick(e) {
         let child = e.children("p").text();
         child = child.trim();
         return child;
     }
+
     /*
     فانکشن 
     sectionPartClicked
@@ -250,6 +252,18 @@
         if (child == "column") {
             columnClicked(fatherId);
         }
+        if (child == "icon") {
+            iconClicked(fatherId);
+        }
+        if (child == "tabs") {
+            tabsClicked(fatherId);
+        }
+        if (child == "accordion") {
+            accordionClicked(fatherId);
+        }
+        if (child == "gallery") {
+            galleryClicked(fatherId);
+        }
     }
 
     // اگر در مودال روی ایجاد سطر کلیک شد.
@@ -274,6 +288,8 @@
             $("#templateFather").attr("fatherId", randumID);
             $("#templateFather").attr("fatherType", "row");
             $("#templateFather").addClass("active show");
+            e.stopPropagation();
+            e.preventDefault();
             templateFatherClasses();
         });
         return randumID;
@@ -307,14 +323,14 @@
                 عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
                 امکان داشتن علامت بعلاوه را میدهد.
             */
-            removeEleman(fatherId, randumID, e);
+            removeEleman(fatherId, randumID, e,"container");
         });
         $("#" + randumID + " .opensetings").on("click", function(e) {
             // مودال تنظیمات را بازمیکند
             openSettingsModal(e, randumID, "Container");
         });
 
-
+        // روی کانتینر کلیک شود
         containerElemant.addEventListener("click", function(e) {
             alert("containerElemant.addEventListener");
             if ($("#" + randumID).length > 0) {
@@ -327,6 +343,8 @@
             } else {
                 templatePartsClicked($("#" + fatherId));
             }
+            e.stopPropagation();
+            e.preventDefault();
         });
         // منوی راست کلیک را میسازیم
         containerElemant.addEventListener("contextmenu", function(e){
@@ -344,8 +362,9 @@
 
 
     // روی ستون کلیک شده است
-    function columnClicked(fatherId) {
-        alert("columnClicked");
+    function columnClicked(fatherId,columnNember = 3) {
+        console.log("columnClicked");
+
         /* 
         در فایل 
         modalTemplateParts.blade.
@@ -361,8 +380,12 @@
         Row
          با کد است.
         */
-       
-        if(fatherId = "forAdding" ){
+        let columnElemant;
+        let randumID; 
+        let classes ="col-12 col-md-";
+        classes= classes + parseInt(12/columnNember) +" column-elemant";
+        if(fatherId == "forAdding" ){
+         
             /*تابع 
             needparent
             پدر های مورد نیاز برای ایجاد ستون را میسازد
@@ -373,86 +396,75 @@
         }
         // صرفا جهت ایجاد یک خلاء زمانی شرط بعدی را درج کرده ام ممکن است بعدا لازم به حذف یا تغییر باشد.
         if(fatherId != "forAdding" ){
-          // سه عدد دویژن به پدر اضافه میکنیم
-          let columnElemant = document.createElement("div");
-          let parent = document.getElementById(fatherId);
+          var parent = document.getElementById(fatherId);
           $(parent).empty();
-          $(columnElemant).addClass("col-12 col-md-4 column-elemant");
-          $(columnElemant).attr("columnCount","1");
-          $(columnElemant).append($(".fa-plus").first().clone());
-          let randumID = randumId();
-          columnElemant.id = randumID;
-          $(parent).append(columnElemant);
-          // درج html
-          insertinHtml("column",randumID,fatherId);
-          let columnElemant2 = document.createElement("div");
-          $(columnElemant2).addClass("col-12 col-md-4 column-elemant");
-          $(columnElemant2).attr("columnCount","1");
-          $(columnElemant2).append($(".fa-plus").first().clone());
-          let randumID2 = randumId();
-          columnElemant2.id = randumID2;
-          $(parent).append(columnElemant2);
-          // درج html
-          insertinHtml("column",randumID2,fatherId);
-          let columnElemant3 = document.createElement("div");
-          $(columnElemant3).addClass("col-12 col-md-4 column-elemant");
-          $(columnElemant3).attr("columnCount","1");
-          $(columnElemant3).append($(".fa-plus").first().clone());
-          let randumID3 = randumId();
-          columnElemant3.id = randumID3;
-          $(parent).append(columnElemant3);
-          // درج html
-          insertinHtml("column",randumID3,fatherId);
+          for (var i = 0; i < columnNember; i++) {  
+                // به تعداد خواسته شده دویژن به پدر اضافه میکنیم
+            columnElemant = document.createElement("div");
+            $(columnElemant).addClass(classes);
+            $(columnElemant).attr("columnCount","1");
+            $(columnElemant).append($(".fa-plus").first().clone());
+            randumID = randumId();
+            columnElemant.id = randumID;
+            $(parent).append(columnElemant);
+            // درج html
+            insertinHtml("column",randumID,fatherId,classes);          
+            //  درج منوی راست کلیک
+            $(columnElemant).append($(".close-ctx").clone());
+            $(columnElemant).append($(".ctxMenu").clone());
+            $("#" + randumID + " .close-ctx").on("click", function(e) {
+                // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
+                closectxMenu(e);          
+            });
 
-        //   درج منوی راست کلیک
-          $(columnElemant).append($(".close-ctx").clone());
-          $(columnElemant).append($(".ctxMenu").clone());
-          $("#" + randumID + " .close-ctx").on("click", function(e) {
-              // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
-            closectxMenu(e);          
-          });
-          $("#" + randumID2 + " .close-ctx").on("click", function(e) {
-              // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
-            closectxMenu(e);          
-          });
-          $("#" + randumID3 + " .close-ctx").on("click", function(e) {
-              // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
-            closectxMenu(e);          
-          });
-            //    اگر راست کلیک درست کار نکرد سه خط زیر را از حالت کامنت خارج کنید.
-        //   let containerId =String($("#"+fatherId).parent(".container").attr("id"));
-        //   let container = document.getElementById(containerId);
-        //   console.log($(container).attr("class"));
-        // //   container.removeEventListener("contextmenu", activeContext,false);
+            //  منوی راست کلیک را میسازیم
+            columnElemant.addEventListener("contextmenu", function(e) {
+                $("#" + randumID + " .ctxMenu").addClass("active");
+                $("#" + randumID + " .close-ctx").addClass("active");
+                $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
+                e.stopPropagation();
+                e.preventDefault();
+            },false);  
          
-        //  منوی راست کلیک را میسازیم
-        columnElemant.addEventListener("contextmenu", function(e) {
-            alert("S");
-             $("#" + randumID + " .ctxMenu").addClass("active");
-             $("#" + randumID + " .close-ctx").addClass("active");
-             $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
-             e.stopPropagation();
-             e.preventDefault();
-            },false);  
-        
-        columnElemant2.addEventListener("contextmenu", function(e) {
-            alert("S");
-             $("#" + randumID + " .ctxMenu").addClass("active");
-             $("#" + randumID + " .close-ctx").addClass("active");
-             $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
-             e.stopPropagation();
-             e.preventDefault();
-            },false);  
+            //  روی حذف المان در منوی راست کلیک کلیک شده است
+            $("#" + randumID + " .removeThisSection").on("click", function(e) {
+                /*
+                    فانکشن 
+                    removeEleman
+                    عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
+                    امکان داشتن علامت بعلاوه را میدهد.
+                */
+                removeEleman(fatherId, randumID, e,"column");
+            });
 
-        columnElemant3.addEventListener("contextmenu", function(e) {
-            alert("S");
-             $("#" + randumID + " .ctxMenu").addClass("active");
-             $("#" + randumID + " .close-ctx").addClass("active");
-             $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
-             e.stopPropagation();
-             e.preventDefault();
-            },false);  
+            $("#" + randumID + " .opensetings").on("click", function(e) {
+                // مودال تنظیمات را بازمیکند
+                openSettingsModal(e, randumID, "Columns");
+            });
+            }
+        }
+    }
 
+
+    // اگر روی ایکون کلیک شد.
+    function iconClicked(fatherId){
+        let containerElemant = document.createElement("div");
+        let parent = document.getElementById(fatherId);
+        $(parent).empty();
+        $(containerElemant).addClass("container container-elemant");
+        $(containerElemant).append($(".fa-plus").first().clone());
+        let randumID = randumId();
+        containerElemant.id = randumID;
+        $(parent).append(containerElemant);
+        // درج html
+        insertinHtml("container",randumID,fatherId);
+        // $("#html").val("<row>");
+        $(containerElemant).append($(".close-ctx").clone());
+        $(containerElemant).append($(".ctxMenu").clone());
+        $("#" + randumID + " .close-ctx").on("click", function(e) {
+            // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
+            closectxMenu(e);
+        });
 
         // روی حذف المان در منوی راست کلیک کلیک شده است
         $("#" + randumID + " .removeThisSection").on("click", function(e) {
@@ -462,16 +474,42 @@
                 عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
                 امکان داشتن علامت بعلاوه را میدهد.
             */
-            removeEleman(fatherId, randumID, e);
+            removeEleman(fatherId, randumID, e,"container");
         });
         $("#" + randumID + " .opensetings").on("click", function(e) {
             // مودال تنظیمات را بازمیکند
-            openSettingsModal(e, randumID, "Columns");
+            openSettingsModal(e, randumID, "Container");
         });
 
-        
-        }
+        // روی کانتینر کلیک شود
+        containerElemant.addEventListener("click", function(e) {
+            alert("containerElemant.addEventListener");
+            if ($("#" + randumID).length > 0) {
+                $("#templateFather").removeClass("row-elemant");
+                $("#templateFather").addClass("active show");
+                $("#templateFather").attr("fatherId", randumID);
+                $("#templateFather").attr("fatherType", "container");
+                e.stopPropagation();
+                templateFatherClasses();
+            } else {
+                templatePartsClicked($("#" + fatherId));
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        // منوی راست کلیک را میسازیم
+        containerElemant.addEventListener("contextmenu", function(e){
+            $("#" + randumID + " .ctxMenu").addClass("active");
+            $("#" + randumID + " .close-ctx").addClass("active");
+            $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        // کلیک روی صفحه منوی راست کلیک را ببندد
+        return randumID;
     }
+
 
 
     // ایجاد یک عبارت تصادفی با پیشفرض 5 عددی
@@ -487,30 +525,38 @@
         return result;
     }
 
-
-    function removeEleman(fatherId, randumID, e) {
+    // در منوی راست کلیک روی حذف المان کلیک شده است
+    function removeEleman(fatherId, randumID, e,nodeName) {
+        console.log(randumID);
         $(".ctxMenu").removeClass("active");
         $(".close-ctx").removeClass("active");
+        // حذف المان
+        fatherId =   removeElemanSubmit(nodeName,randumID);
+        // $("#" + fatherId).empty();
         $("#" + fatherId).append($(".fa-plus").first().clone());
-        $("#" + randumID).remove();
+        // fatherId =   removeElemanSubmit(nodeName,fatherId);
+        // $("#" + randumID).remove();
         templateFatherClasses();
         e.preventDefault();
         e.stopPropagation();
     }
 
+    // بستن راست کلیک
     function closectxMenu(e) {
         $(".ctxMenu").removeClass("active");
         $(".close-ctx").removeClass("active");
         e.stopPropagation();
     }
 
+    // بازکردن مودال تنظیمات
     function openSettingsModal(e, id, theName) {
         $(".ctxMenu").removeClass("active");
         $(".close-ctx").removeClass("active");
         $("#settings" + theName).addClass("show active");
-        $("#settingsContainer").attr("fatherId", id);
+        $("#settings"+ theName).attr("fatherId", id);
         e.stopPropagation();
     }
+  
     // backgroundSettings
     $("#opacity").on("change", function(e) {
         var opacity = $("#opacity").val();
@@ -519,6 +565,7 @@
         $('#showFinalColor').css('background-color', rgbaCol);
         $("#ContainerBgColor").val(rgbaCol);
     });
+    // ایجاد رنگ با کمک رنگ اصلی و شفافیت آن
     $("#baseColor").on("change", function(e) {
         var opacity = $("#opacity").val();
         var color = $("#baseColor").val();
@@ -528,7 +575,7 @@
     });
 
     // تایید استایل های کانتینر در پنجره تنظیمات
-    $("#container-style-tab-pane-apply").on("click",function(e){
+    $("#container-style-tab-pane-apply").on("click",function(e){ 
         let fatherId = $("#settingsContainer").attr("fatherId");
         let background = $("#ContainerBgColor").val();
         let font = $("#settingsContainer .font-selector").val();
@@ -566,15 +613,61 @@
         e.preventDefault();
     });
 
+    // تایید استایل های ستون در پنجره تنظیمات
+    $("#columns-style-tab-pane-apply").on("click",function(e){ 
+        let fatherId = $("#settingsColumns").attr("fatherId");
+        let ColumnsCount =parseInt($("#culomnnumber").val());
+        let background = $("#CulomnsBgColor").val();
+        let font = $("#settingsColumns .font-selector").val();
+        let padding="";
+        if($("#settingsColumns .padding-top-selector").val() != ""){
+            padding =padding + $("#settingsColumns .padding-top-selector").val() +"rem ";
+        }
+        if($("#settingsColumns .padding-right-selector").val() != ""){
+            padding =padding +  $("#settingsColumns .padding-right-selector").val() +"rem ";
+        }
+        if( $("#settingsColumns .padding-bottom-selector").val() != ""){
+            padding =padding +  $("#settingsColumns .padding-bottom-selector").val() +"rem ";
+        }
+        if($("#settingsColumns .padding-left-selector").val() != ""){
+            padding =padding +  $("#settingsColumns .padding-left-selector").val() +"rem ";
+        }
+        padding = padding.trim();
+        let finalCss = "#"+fatherId+"{";
+        if(background != ""){
+            finalCss = finalCss + "background:"+background+";";
+        }
+        if(font != null && font != ""){
+            finalCss = finalCss + "font-family:"+font+";";
+        }
+        if(padding != ""){
+            finalCss = finalCss + "padding:"+padding+";";
+        }
+        finalCss = finalCss + "}";
+
+        if(background != "" || (font != null && font != "") || padding != ""){
+            insertcss(fatherId,finalCss);    
+        }
+        if (ColumnsCount != 3) {
+            // ستون های موجود را حذف  میکنیم.
+            fatherId =   removeElemanSubmit("column",fatherId);
+            columnClicked(fatherId,ColumnsCount);
+        }
+        $("#settingsColumns").removeClass("show active");   
+        e.preventDefault();
+    });
+
+
     // create html
-    function insertinHtml(ElemantName,randumID,fatherId){
+    function insertinHtml(ElemantName,randumID,fatherId,classes=""){
         let htmlContex = $("#templateHtmlOutput").text();
         let elamentText= "";
         if (ElemantName == "row" || ElemantName == "container" || ElemantName == "container-fluid" ){
-            elamentText  = "<div  class='"+ElemantName+"'"+ " id='"+randumID+"'></div>"+"\n";
+            elamentText  = "<div  class='"+ElemantName+"'"+ " id='"+randumID+"'>"+"\n"+"</div>"+"\n";
         }
         if (ElemantName == "column"){
-            elamentText  = "<div  class='col-12 col-md-4 "+ElemantName+"'"+ " id='"+randumID+"'></div>";
+
+            elamentText  = "<div  class='"+classes+"' "+ElemantName+"'"+ " id='"+randumID+"'></div>";
         } 
         if(htmlContex == ""){
             $("#templateHtmlOutput").text(elamentText+"\n");
@@ -592,7 +685,12 @@
             }
         }
     }
+
+    // ساخت Css
     function insertcss(fatherId,finalCss){
+        // در این فانکشن تنطیمات انجام شده را در 
+        // Css
+        // ذخیره میکنیم.
         let cssContext = $("#templateCssOutput").text();
         if(cssContext == ""){
             $("#templateCssOutput").text(finalCss);
@@ -601,19 +699,30 @@
         }
     }
 
-
+/* عنصر برای ایجاد شدن والد میخواهد این والد بصورت پیشفرض
+Container,
+Row
+هستند
+*/
     function needparent(fatherId){
         // این فانکشن وقتی اجرا میشود که برای اجرای 
         // فرزند نیاز به پدر داشته باشیم 
         // مثلا اگر ستون بخواهیم باید قبل آن
         //  سطر داشته باشیم.
-        var container =  containerClicked(fatherId);
-         $("#templateFather").attr("fatherId", container);
+        var container =  containerClicked(fatherId);         
         var row = rowClicked(container);
+        $("#templateFather").attr("fatherId", row);
         return row;
        
     }
+
+    /* از این فانکشن استفاده نشده است ولی در صورت لزوم میتوان 
+    باز شدن منوی راست کلیک را با این فانکشن انجام داد.
+    */
     function activeContext(e,randumID){
+        /* از این فانکشن استفاده نشده است ولی در صورت لزوم میتوان 
+        باز شدن منوی راست کلیک را با این فانکشن انجام داد.
+        */
         e = e || window.event;
         $("#" + randumID + " .ctxMenu").addClass("active");
         $("#" + randumID + " .close-ctx").addClass("active");
@@ -621,6 +730,48 @@
         e.stopPropagation();
         e.preventDefault();
     }
+
+    // در ستون ها وقتی تعداد ستون های جدید با ستون های قبل برابر نیست با این فانکشن ستون های قبل را حذف میکنیم.
+    function removeElemanSubmit(elemanName,fatherId){
+        var grandpa =$("#"+fatherId).parent();
+        $(grandpa).empty();
+        fatherId = $(grandpa).attr("id");
+        let htmlContex =  RemovesFromHtml(elemanName,fatherId);    
+        $("#templateHtmlOutput").text(htmlContex);
+        return fatherId;
+    }
+   
+    // حذف المان از کدهای تایپ شده
+    function RemovesFromHtml(elemanName,fatherId){
+        let htmlContex = $("#templateHtmlOutput").text();
+        if(htmlContex != ""){
+            let pos = htmlContex.indexOf(fatherId);
+            let needle =  parseInt(pos)+8;
+            needle = parseInt(needle);
+            let newhtmlContex =  htmlContex.substring(0,needle);
+            console.log(newhtmlContex);
+            let divCounter = parseInt(countRepeatedWords(newhtmlContex));
+            let CloseTag = ""
+            for (let i = 0; i < divCounter; i++) {
+                CloseTag = CloseTag + "</div>"+"\n";
+            }
+            htmlContex = newhtmlContex + CloseTag;
+            return(htmlContex);
+        }       
+    }
+
+    // تعداد یک عنصر در یک متن را میشمارد
+    function countRepeatedWords(sentence) {
+        let words = sentence.split(" ");
+        let number = 0;
+        for (let i = 0; i < words.length; i++) {
+            if (words[i] == "<div") {
+                number++
+            }
+        }
+        return number;
+    }
+
 
 </script>
 

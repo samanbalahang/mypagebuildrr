@@ -136,7 +136,7 @@
                        role="button">
                         <img alt=""
                              class="rounded-circle" height="22"
-                             loading="lazy" src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg"/>
+                             loading="lazy" src=""/>
                     </a>
                     <ul aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">My profile</a></li>

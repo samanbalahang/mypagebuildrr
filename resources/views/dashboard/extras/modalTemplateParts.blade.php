@@ -73,15 +73,15 @@
                     <img src="{{url('/')}}/dashboard/assets/images/sections/icon.jpg" alt="icon">
                     <p class="text-center">icon</p>
                 </section>
-                <section class="section-part" id="icon">
+                <section class="section-part" id="tabs">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/tabs.jpg" alt="tabs">
                     <p class="text-center">tabs</p>
                 </section>
-                <section class="section-part" id="icon">
+                <section class="section-part" id="accordion">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/accordion.jpg" alt="accordion">
                     <p class="text-center">accordion</p>
                 </section>
-                <section class="section-part" id="icon">
+                <section class="section-part" id="gallery">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/gallery.jpg" alt="gallery">
                     <p class="text-center">gallery</p>
                 </section>

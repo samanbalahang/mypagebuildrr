@@ -550,7 +550,7 @@ label {
 [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
     cursor: pointer;
 }
-input[type=text].form-control {
+input[type=text].form-control,input[type=number].form-control {
     border: none !important;
     border-bottom: 1px solid white !important;
     border-bottom-width: 1px !important;

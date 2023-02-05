@@ -25,7 +25,7 @@
                         <input type="range" min="0" max="1" step="0.1" id="opacity" value="1">
                     </p>
                         <div id="showFinalColor">پس زمینه شما به این رنگ است</div>
-                        <input type="hidden" name="color" id="ContainerBgColor">
+                        <input type="hidden" name="color" id="CulomnsBgColor">
                     <p>
                         تایپوگرافی
                     </p>
@@ -75,7 +75,7 @@
                             <p>چپ</p>
                         </div>
                     </div>
-                    <a href="" class="btn btn-primary" id="container-style-tab-pane-apply">
+                    <a href="#" class="btn btn-primary" id="columns-style-tab-pane-apply">
                         تایید
                     </a>
                 </section>
