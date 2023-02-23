@@ -164,7 +164,7 @@ aside .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
     position: absolute;
     width: 250px;
     top: 0;
-    right: 13.9rem;
+    right: 12.9rem;
     z-index: 999;
     background: black;
     padding: 0;
@@ -176,7 +176,7 @@ aside .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
     width: 250px;
     top:auto;
     bottom: 0;
-    right: 13.9rem;
+    right: 12.9rem;
     transform: translate(-0%,50%);
     z-index: 999;
     background: black;

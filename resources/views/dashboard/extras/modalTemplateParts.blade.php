@@ -21,17 +21,13 @@
                     <img src="{{url('/')}}/dashboard/assets/images/sections/container-fluid.jpg" alt="container-fluid">
                     <p class="text-center">container-fluid</p>
                 </section>
-                <section class="section-part" id="headings">
-                    <img src="{{url('/')}}/dashboard/assets/images/sections/headings.jpg" alt="headings">
-                    <p class="text-center">headings</p>
+                <section class="section-part" id="textEditor">
+                    <img src="{{url('/')}}/dashboard/assets/images/sections/textEditor.jpg" alt="textEditor">
+                    <p class="text-center">textEditor</p>
                 </section>
-                <section class="section-part" id="pragraph">
-                    <img src="{{url('/')}}/dashboard/assets/images/sections/pragraph.jpg" alt="pragraph">
-                    <p class="text-center">pragraph</p>
-                </section>
-                <section class="section-part" id="lists">
-                    <img src="{{url('/')}}/dashboard/assets/images/sections/lists.jpg" alt="lists">
-                    <p class="text-center">lists</p>
+                <section class="section-part" id="tables">
+                    <img src="{{url('/')}}/dashboard/assets/images/sections/tables.jpg" alt="tables">
+                    <p class="text-center">tables</p>
                 </section>
                 <section class="section-part" id="image">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/image.jpg" alt="image">
@@ -44,10 +40,6 @@
                 <section class="section-part" id="slider">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/slider.jpg" alt="slider">
                     <p class="text-center">slider</p>
-                </section>
-                <section class="section-part" id="tables">
-                    <img src="{{url('/')}}/dashboard/assets/images/sections/tables.jpg" alt="tables">
-                    <p class="text-center">tables</p>
                 </section>
                 <section class="section-part" id="textTemplates">
                     <img src="{{url('/')}}/dashboard/assets/images/sections/text-templates.jpg" alt="text-templates">

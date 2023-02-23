@@ -32,12 +32,12 @@
                     </ul>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="profile-tab0" type="button" href="{{url('/')}}/lara-admin/posts">
+                    <a class="nav-link" id="profile-tab0" type="button" href="#">
                         <i class="fas fa-pen-nib fa-fw me-3"></i><span>نوشته </span>
                     </a>
                     <ul class="absolute-menu submenu">
-                        <li><a href="{{url('/')}}/lara-admin/posts">همه نوشته ها</a></li>
-                        <li><a href="#">افزودن نوشته</a></li>
+                        <li><a href="{{route('posts.index')}}">همه نوشته ها</a></li>
+                        <li><a href="{{route('posts.create')}}">افزودن نوشته</a></li>
                         <li><a href="#">دسته ها</a></li>
                         <li><a href="#">برچسب ها</a></li>
                     </ul>

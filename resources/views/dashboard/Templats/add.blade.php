@@ -1,6 +1,18 @@
 @extends('dashboard.layouts.master')
 
 @section("extracss")
+<link href="{{url('/')}}/dashboard/assets/css/summernote.min.css" rel="stylesheet">
+<link href="{{url('/')}}/dashboard/assets/css/datatables.min.css" rel="stylesheet">
+<link href="{{url('/')}}/dashboard/assets/css/datatable-init.css" rel="stylesheet">
+<link href="{{url('/')}}/dashboard/assets/css/tables.css" rel="stylesheet">
+<script src="{{url('/')}}/dashboard/assets/js/summernote.min.js"></script>
+<script src="{{url('/')}}/dashboard/assets/js/datatables.min.js"></script>
+<style>
+    #selectTableFrom{
+        height: 300px;
+        overflow-y: scroll;
+    }
+</style>
 
 @endsection
 
@@ -60,6 +72,7 @@
         @include('dashboard.Templats.settings.ctx')
         @include('dashboard.Templats.settings.container')
         @include('dashboard.Templats.settings.columns')
+        @include('dashboard.Templats.settings.table')
 
 
 
@@ -69,6 +82,8 @@
 
 @section("extrajs")
 <script src="{{url('/')}}/dashboard/assets/js/form.js"></script>
+<script src="{{url('/')}}/dashboard/assets/js/summernote-ext-elfinder.js"></script>
+<script src="{{url('/')}}/dashboard/assets/js/datatabledet.js"></script>
 <script>
     // نکته در بوت استرپ ما یک کانتینر داخل آن یک سطر داریم و در سطر ستون ها را مشخص میکنیم
     // فرم اول سابمیت شده است
@@ -216,14 +231,8 @@
         if (child == "container-fluid") {
             containerfluidClicked(fatherId);
         }
-        if (child == "headings") {
-            headingsClicked(fatherId);
-        }
-        if (child == "pragraph") {
-            pragraphClicked(fatherId);
-        }
-        if (child == "lists") {
-            listsClicked(fatherId);
+        if (child == "textEditor") {
+            textEditorClicked(fatherId);
         }
         if (child == "image") {
             imageClicked(fatherId);
@@ -346,6 +355,7 @@
             e.stopPropagation();
             e.preventDefault();
         });
+
         // منوی راست کلیک را میسازیم
         containerElemant.addEventListener("contextmenu", function(e){
             $("#" + randumID + " .ctxMenu").addClass("active");
@@ -360,89 +370,114 @@
 
     }
 
-
-    // روی ستون کلیک شده است
-    function columnClicked(fatherId,columnNember = 3) {
-        console.log("columnClicked");
-
-        /* 
-        در فایل 
-        modalTemplateParts.blade.
-        که مودال تمپلیت ها میباشد ما یک 
-        fatherId = forAdding
-        داریم که اگر روی بچه ایی غیر از
-        بچه اولیه کلیک شود این مقدار با
-        ID
-        بچه جایگزین میشود. 
-        در پایین ما شرط گذاشته اییم که والد 
-        ستون ما اولین والد موجود باشد.
-        در این حالت وظیفه ایجاد 
-        Row
-         با کد است.
-        */
-        let columnElemant;
-        let randumID; 
-        let classes ="col-12 col-md-";
-        classes= classes + parseInt(12/columnNember) +" column-elemant";
-        if(fatherId == "forAdding" ){
-         
-            /*تابع 
-            needparent
-            پدر های مورد نیاز برای ایجاد ستون را میسازد
-            */
-            fatherId =  needparent(fatherId);
-         
-            // rowClicked(fatherId);
+    // اگر در مودال روی کانتینر فلوید کلیک شد
+    function containerfluidClicked(fatherId) {
+       let containerElemant = document.createElement("div");
+       let parent = document.getElementById(fatherId);
+       $(parent).empty();
+       $(containerElemant).addClass("container-fluid container-elemant");
+       $(containerElemant).append($(".fa-plus").first().clone());
+       let randumID = randumId();
+       containerElemant.id = randumID;
+       $(parent).append(containerElemant);
+       // درج html
+       insertinHtml("container-fluid",randumID,fatherId);
+       // $("#html").val("<row>");
+       $(containerElemant).append($(".close-ctx").clone());
+       $(containerElemant).append($(".ctxMenu").clone());
+       $("#" + randumID + " .close-ctx").on("click", function(e) {
+           // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
+           closectxMenu(e);
+       });
+      // روی حذف المان در منوی راست کلیک کلیک شده است
+       $("#" + randumID + " .removeThisSection").on("click", function(e) {
+           /*
+               فانکشن 
+               removeEleman
+               عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
+               امکان داشتن علامت بعلاوه را میدهد.
+           */
+           removeEleman(fatherId, randumID, e,"container");
+       });
+       $("#" + randumID + " .opensetings").on("click", function(e) {
+           // مودال تنظیمات را بازمیکند
+           openSettingsModal(e, randumID, "Container");
+        });
+        // روی کانتینر کلیک شود
+        containerElemant.addEventListener("click", function(e) {
+        alert("containerElemant.addEventListener");
+        if ($("#" + randumID).length > 0) {
+            $("#templateFather").removeClass("row-elemant");
+            $("#templateFather").addClass("active show");
+            $("#templateFather").attr("fatherId", randumID);
+            $("#templateFather").attr("fatherType", "container");
+            e.stopPropagation();
+            templateFatherClasses();
+        } else {
+            templatePartsClicked($("#" + fatherId));
         }
-        // صرفا جهت ایجاد یک خلاء زمانی شرط بعدی را درج کرده ام ممکن است بعدا لازم به حذف یا تغییر باشد.
-        if(fatherId != "forAdding" ){
-          var parent = document.getElementById(fatherId);
-          $(parent).empty();
-          for (var i = 0; i < columnNember; i++) {  
-                // به تعداد خواسته شده دویژن به پدر اضافه میکنیم
-            columnElemant = document.createElement("div");
-            $(columnElemant).addClass(classes);
-            $(columnElemant).attr("columnCount","1");
-            $(columnElemant).append($(".fa-plus").first().clone());
-            randumID = randumId();
-            columnElemant.id = randumID;
-            $(parent).append(columnElemant);
-            // درج html
-            insertinHtml("column",randumID,fatherId,classes);          
-            //  درج منوی راست کلیک
-            $(columnElemant).append($(".close-ctx").clone());
-            $(columnElemant).append($(".ctxMenu").clone());
-            $("#" + randumID + " .close-ctx").on("click", function(e) {
-                // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
-                closectxMenu(e);          
-            });
+        e.stopPropagation();
+        e.preventDefault();
+        });
+         // کلیک روی صفحه منوی راست کلیک را ببندد
+         return randumID;
 
-            //  منوی راست کلیک را میسازیم
-            columnElemant.addEventListener("contextmenu", function(e) {
-                $("#" + randumID + " .ctxMenu").addClass("active");
-                $("#" + randumID + " .close-ctx").addClass("active");
-                $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
-                e.stopPropagation();
-                e.preventDefault();
-            },false);  
-         
-            //  روی حذف المان در منوی راست کلیک کلیک شده است
-            $("#" + randumID + " .removeThisSection").on("click", function(e) {
-                /*
-                    فانکشن 
-                    removeEleman
-                    عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
-                    امکان داشتن علامت بعلاوه را میدهد.
-                */
-                removeEleman(fatherId, randumID, e,"column");
-            });
+    }
 
-            $("#" + randumID + " .opensetings").on("click", function(e) {
-                // مودال تنظیمات را بازمیکند
-                openSettingsModal(e, randumID, "Columns");
-            });
-            }
-        }
+     // اگر در مودال روی هدینگ کلیک شد
+    function textEditorClicked(fatherId) {
+       let containerElemant = document.createElement("div");
+       let parent = document.getElementById(fatherId);
+       $(parent).empty();
+       let classes = "summernote summernote-elemant";
+       $(containerElemant).addClass(classes);
+       let randumID = randumId();
+       containerElemant.id = randumID;
+       $(parent).append(containerElemant);
+       createSummernote(randumID);
+       // درج html
+       insertinHtml("div",randumID,fatherId,classes);
+       // $("#html").val("<row>");
+       $(containerElemant).append($(".close-ctx").clone());
+       $(containerElemant).append($(".ctxMenu").clone());
+       $("#" + randumID + " .close-ctx").on("click", function(e) {
+           // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
+           closectxMenu(e);
+       });
+      // روی حذف المان در منوی راست کلیک کلیک شده است
+       $("#" + randumID + " .removeThisSection").on("click", function(e) {
+           /*
+               فانکشن 
+               removeEleman
+               عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
+               امکان داشتن علامت بعلاوه را میدهد.
+           */
+           removeEleman(fatherId, randumID, e,"container");
+       });
+
+       $("#" + randumID + " .opensetings").on("click", function(e) {
+           // مودال تنظیمات را بازمیکند
+           openSettingsModal(e, randumID, "Container");
+
+        });  
+        // منوی راست کلیک را میسازیم
+        containerElemant.addEventListener("contextmenu", function(e){
+            $("#" + randumID + " .ctxMenu").addClass("active");
+            $("#" + randumID + " .close-ctx").addClass("active");
+            $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        // کلیک روی صفحه منوی راست کلیک را ببندد
+        return randumID;
+
+    }
+
+    // اگر در مودال روی جدول کلیک شد
+    function tablesClicked(fatherId) {
+       $("#settingsTable").attr("fatherId",fatherId);
+       $("#settingsTable").show();
     }
 
 
@@ -451,13 +486,13 @@
         let containerElemant = document.createElement("div");
         let parent = document.getElementById(fatherId);
         $(parent).empty();
-        $(containerElemant).addClass("container container-elemant");
+        $(containerElemant).addClass("icon icon-elemant");
         $(containerElemant).append($(".fa-plus").first().clone());
         let randumID = randumId();
         containerElemant.id = randumID;
         $(parent).append(containerElemant);
         // درج html
-        insertinHtml("container",randumID,fatherId);
+        insertinHtml("container",randumID,fatherId,);
         // $("#html").val("<row>");
         $(containerElemant).append($(".close-ctx").clone());
         $(containerElemant).append($(".ctxMenu").clone());
@@ -657,18 +692,85 @@
         e.preventDefault();
     });
 
+    // تایید استایل های جدول
+    $("#Table-Setting-apply").on("click",function(e){
+        let fatherId = $("#settingsTable").attr("fatherId");
+        console.log(fatherId);
+        let column = $("#tableCols").val();
+        let row = $("#tableRows").val();
+        let tableElemant = document.createElement("table");
+        $(tableElemant).addClass("datatable tablerout table-light-shading table table-elemant");
+        let randumID = randumId();
+        tableElemant.id = randumID;
+        createTableColumnRow(tableElemant,column,row);
+        $("#"+fatherId).append(tableElemant);
+        $("#settingsTable").hide();
+        e.preventDefault();
+    });
 
+    $("#selectTableFrom table").on("click",function(e){
+        $("#selectedTable").empty();
+        let tableClasses = $(this).attr("class");
+        let tableElemant = document.createElement("table");
+        $(tableElemant).addClass(tableClasses);
+        createTableColumnRow(tableElemant,4,2);
+        $("#selectedTable").append(tableElemant);
+        let hr = document.createElement("hr");
+        $("#selectedTable").append(hr);
+        $("#tableStyle").val(tableClasses);
+    });
+
+
+    function createTableColumnRow(tableElemant,column,row){
+        column = parseInt(column);
+        row    = parseInt(row);
+        let thead = document.createElement("thead");
+        let tr = document.createElement("tr");
+        let th,td;
+        for (let index = 0; index < column; index++) {
+            th = document.createElement("th"); 
+            $(tr).append(th);    
+            $(th).append($(".fa-plus").first().clone());        
+        }
+        $(thead).append(tr);     
+        let tbody = document.createElement("tbody");
+        let i=1;
+        for (let index = 0; index < row; index++) {
+            tr = document.createElement("tr");
+            for (let index = 0; index < column; index++) {
+                td = document.createElement("td");
+                $(tr).append(td);  
+                if (i!=1) {
+                    $(td).append($(".fa-plus").first().clone()); 
+                }                
+                i++;         
+            }
+            $(tbody).append(tr);  
+            i=1;     
+        }
+        let tfoot = document.createElement("tfoot");
+        tr = document.createElement("tr");
+        for (let index = 0; index < column; index++) {
+            th = document.createElement("th"); 
+            $(tr).append(th);     
+            $(th).append($(".fa-plus").first().clone());           
+        }
+        $(tfoot).append(tr);     
+        $(tableElemant).append(thead);     
+        $(tableElemant).append(tbody);     
+        $(tableElemant).append(tfoot);     
+    }
     // create html
     function insertinHtml(ElemantName,randumID,fatherId,classes=""){
         let htmlContex = $("#templateHtmlOutput").text();
         let elamentText= "";
         if (ElemantName == "row" || ElemantName == "container" || ElemantName == "container-fluid" ){
             elamentText  = "<div  class='"+ElemantName+"'"+ " id='"+randumID+"'>"+"\n"+"</div>"+"\n";
+        }else if (ElemantName == "column"){
+            elamentText  = "<div  class='"+classes+" "+ElemantName+"'"+" id='"+randumID+"'></div>";
+        } else{
+            elamentText  = "<"+ElemantName+"  class='"+classes+"'"+" id='"+randumID+"'></"+ElemantName+">";
         }
-        if (ElemantName == "column"){
-
-            elamentText  = "<div  class='"+classes+"' "+ElemantName+"'"+ " id='"+randumID+"'></div>";
-        } 
         if(htmlContex == ""){
             $("#templateHtmlOutput").text(elamentText+"\n");
         }else{
@@ -770,6 +872,141 @@ Row
             }
         }
         return number;
+    }
+
+    /*   فانکشنی که با یک حلقه به تعداد 
+    columnNember
+    برای ما ستون میسازد
+    */
+    function createCulumnsElemants(columnNember,fatherId,classes,parent,removeFather="0"){
+        for (var i = 0; i < columnNember; i++) {  
+            // به تعداد خواسته شده دویژن به پدر اضافه میکنیم
+            columnElemant = document.createElement("div");
+            $(columnElemant).addClass(classes);
+            $(columnElemant).attr("columnCount",i);
+            $(columnElemant).append($(".fa-plus").first().clone());
+            randumID = randumId();
+            columnElemant.id = randumID;
+            // اگر قبلا سطری درج نشده
+            if(removeFather=="0"){
+                $(parent).append(columnElemant);
+            }else{
+                $("#"+removeFather).after(columnElemant);
+            }
+            // درج html
+            insertinHtml("column",randumID,fatherId,classes);          
+            //  درج منوی راست کلیک
+            $(columnElemant).append($(".close-ctx").clone());
+            $(columnElemant).append($(".ctxMenu").clone());
+            $("#" + randumID + " .close-ctx").on("click", function(e) {
+                // با کلیک خارج از منوی راست کلیک منوی راست کلیک را میبندد
+                closectxMenu(e);          
+            });
+
+            //  منوی راست کلیک را میسازیم
+            columnElemant.addEventListener("contextmenu", function(e) {
+                $("#" + randumID + " .ctxMenu").addClass("active");
+                $("#" + randumID + " .close-ctx").addClass("active");
+                $("#" + randumID + " .ctxMenu").attr("belongto", randumID);
+                e.stopPropagation();
+                e.preventDefault();
+            },false);  
+         
+            //  روی حذف المان در منوی راست کلیک کلیک شده است
+            $("#" + randumID + " .removeThisSection").on("click", function(e) {
+                /*
+                    فانکشن 
+                    removeEleman
+                    عملیات حذف را انجام میدهد و المان فعلی را حذف و به المان پدر
+                    امکان داشتن علامت بعلاوه را میدهد.
+                */
+                removeEleman(fatherId, randumID, e,"column");
+            });
+
+            $("#" + randumID + " .opensetings").on("click", function(e) {
+                // مودال تنظیمات را بازمیکند
+                openSettingsModal(e, randumID, "Columns");
+            });
+            
+            // روی هر ستون کلیک شود
+            columnElemant.addEventListener("click", function(e) {
+                alert("columnElemant.addEventListener");
+                if ($("#" + randumID).length > 0) {
+                    $("#templateFather").removeClass("row-elemant");
+                    $("#templateFather").addClass("active show");
+                    $("#templateFather").attr("fatherId", randumID);
+                    $("#templateFather").attr("fatherType", "container");
+                    e.stopPropagation();
+                    templateFatherClasses();
+                } else {
+                    templatePartsClicked($("#" + fatherId));
+                }
+                e.stopPropagation();
+                e.preventDefault();
+            });
+
+            }
+            return columnElemant.id;
+    }
+
+    // ساخت امکان افزودن ردیف زیر ردیف موجود.
+    function createNewRowUnderThis(columnNember,fatherId,classes,parent,lastColID){
+        var addnewrow = createElemant(columnNember,fatherId,classes,parent);
+        var columnElemant = addEventListeners(addnewrow,columnNember,fatherId,classes,parent,lastColID);
+        console.log(lastColID);
+        $("#"+lastColID).after($(columnElemant));
+    }
+
+   function createElemant(columnNember,fatherId,classes,parent){
+        var addnewrow = document.createElement("div");
+        var fullClass = "col-12";
+        $(addnewrow).addClass(fullClass);
+        $(addnewrow).attr("columnCount","1");
+        $(addnewrow).append($(".fa-plus").first().clone());
+        $(parent).append(addnewrow);
+        return addnewrow
+   }
+
+   function addEventListeners(addnewrow,columnNember,fatherId,classes,parent,lastColID){
+        addnewrow.addEventListener("click", function(e) {
+            var columnElemant =  createCulumnsElemants(columnNember,fatherId,classes,parent,lastColID);
+            e.stopPropagation();
+            e.preventDefault();
+            return columnElemant;
+        });
+   }
+
+    function createSummernote(randumID){
+        var summernote = document.getElementById(randumID);
+        $("#"+randumID).summernote({
+             height: 800,
+             callbacks: {
+                 onImageUpload: function(files, editor, welEditable) {
+                     sendFile(files[0], editor, welEditable);                 
+                }  
+             }               
+         });
+    }
+
+    function sendFile(file, editor, welEditable) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+        data: data,
+        type: "POST",
+        url: "m.php",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(url) {
+            console.log(url);
+            var imgNode =document.createElement('img');
+            var src= URL.createObjectURL(file);
+            console.log(src);
+            imgNode.setAttribute("src",src);
+            $(summernote).summernote('insertNode', imgNode);
+        }
+        });
     }
 
 

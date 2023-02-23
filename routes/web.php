@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\thePublicController;
 use App\Http\Controllers\admin\dashCounterController;
 use App\Http\Controllers\admin\dashTemplatesController;
+use App\Http\Controllers\admin\dashPostController;
+use App\Http\Controllers\admin\dashMediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +26,8 @@ Route::get('/', [ThepublicController::class,"index"]);
 Route::group(['prefix' => 'mainlara'],function(){
     Route::resource('/',dashCounterController::class);
     Route::resource('/tremplates',dashTemplatesController::class);
+    Route::resource('/posts',dashPostController::class);
+    Route::post('/dropMedia',[dashMediaController::class,"dropMedia"])->name('dropMedia');
+    Route::post('/summer-note-media',[dashMediaController::class,"dropMedia"])->name('dropMedia');
+
 });
