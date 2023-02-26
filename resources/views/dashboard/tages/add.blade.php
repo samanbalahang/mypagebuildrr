@@ -14,7 +14,7 @@
                 <section id="mainForm">
                     <section class="formTitle">
                         <h1 class="mb-0 text-center">
-                            <strong>{{__("ایجاد پست")}}</strong>
+                            <strong>{{__("ایجاد تگ")}}</strong>
                         </h1>
                     </section>
                     <section class="my-4">

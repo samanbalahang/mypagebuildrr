@@ -10,10 +10,11 @@
     <main>
         @include('dashboard.extras.pageSettings')
         <section id="mainForm">
-            <section class="formTitle">
+            <section class="formTitle  d-flex justify-content-between">
                 <h1>
-                    پست ها
+                    تگ ها
                 </h1>
+                <a href="{{route('tags.create')}}" class="btn btn-success p-3">ایجاد تگ</a>
             </section>
             <section class="addbtn my-3">
                 <table class="datatable tablerout table-light-grid">

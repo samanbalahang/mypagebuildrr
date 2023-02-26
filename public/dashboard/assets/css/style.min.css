@@ -87,6 +87,22 @@ table.dataTable td.dt-control{text-align:center;cursor:pointer}table.dataTable t
 ::-webkit-scrollbar-track {
     background-color: darkgrey;
 }
+.btn-danger{
+    color: #fff !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.btn-success{
+    color: #fff !important;
+    background-color: #157347 !important;
+    border-color: #157347 !important;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.mainImg{
+    max-width: 100%;
+}
 p{
     margin: 0 !important;
 }

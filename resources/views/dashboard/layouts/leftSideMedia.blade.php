@@ -101,7 +101,7 @@
             </h2>
           
             <div id="flush-collapseFifth" class="accordion-collapse collapse show" aria-labelledby="flush-headingFifth" data-mdb-parent="#accordionFlushExample">
-                <form method="post" action="{{route('dropMedia')}}"  class="form-control" enctype="multipart/form-data" id="multymedia">
+                <form method="post" action="{{route('dropMedia')}}" class="form-control dropzone dz-clickable"  enctype="multipart/form-data" id="multymedia">
                         @csrf
                     <div class="dz-default dz-message"><span>فایل های خود را به این ناحیه درگ کنید</span></div>
                 </form>

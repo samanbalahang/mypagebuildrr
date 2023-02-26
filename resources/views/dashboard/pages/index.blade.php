@@ -10,10 +10,11 @@
     <main>
         @include('dashboard.extras.pageSettings')
         <section id="mainForm">
-            <section class="formTitle">
+            <section class="formTitle  d-flex justify-content-between">
                 <h1>
-                    پست ها
+                    دسته بندی ها
                 </h1>
+                <a href="{{route('cats.create')}}" class="btn btn-success p-3">ایجاد دسته بندی</a>
             </section>
             <section class="addbtn my-3">
                 <table class="datatable tablerout table-light-grid">

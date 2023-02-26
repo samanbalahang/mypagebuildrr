@@ -38,8 +38,8 @@
                     <ul class="absolute-menu submenu">
                         <li><a href="{{route('posts.index')}}">همه نوشته ها</a></li>
                         <li><a href="{{route('posts.create')}}">افزودن نوشته</a></li>
-                        <li><a href="#">دسته ها</a></li>
-                        <li><a href="#">برچسب ها</a></li>
+                        <li><a href="{{route('cats.index')}}">دسته ها</a></li>
+                        <li><a href="{{route('tags.index')}}">برچسب ها</a></li>
                     </ul>
                 </li>
 
@@ -48,23 +48,23 @@
                         <i class="fas fa-file-alt fa-fw me-3"></i><span>برگه ها </span>
                     </a>
                     <ul class="absolute-menu submenu">
-                        <li><a href="#">همه برگه ها</a></li>
-                        <li><a href="#">افزودن جدید</a></li>
+                        <li><a href="{{route('pages.index')}}">همه برگه ها</a></li>
+                        <li><a href="{{route('pages.create')}}">افزودن جدید</a></li>
                         <li><a href="#">صفحه اصلی</a></li>
                     </ul>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="comment-tab0" role="tab" type="button" href="#">
+                    <a class="nav-link" id="comment-tab0" role="tab" type="button" href="">
                         <i class="fas fa-file-alt fa-fw me-3"></i><span>تبلیغات</span>
                     </a>
                     <ul class="absolute-menu submenu">
-                        <li><a href="#">همه تبلیغ ها</a></li>
-                        <li><a href="#">افزودن جدید</a></li>
+                        <li><a href="{{route('advs.index')}}">همه تبلیغ ها</a></li>
+                        <li><a href="{{route('advs.create')}}">افزودن جدید</a></li>
                         <li><a href="#">دسته بندی تبلیغات</a></li>
                     </ul>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="comment-tab0" role="tab" type="button" href="#">
+                    <a class="nav-link" id="comment-tab0" role="tab" type="button" href="{{route('comments.index')}}">
                         <i class="fas fa-file-alt fa-fw me-3"></i><span>دیدگاه ها </span>
                     </a>
                 </li>

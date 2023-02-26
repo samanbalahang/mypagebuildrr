@@ -14,8 +14,9 @@
                 <section id="mainForm">
                     <section class="formTitle">
                         <h1 class="mb-0 text-center">
-                            <strong>{{__("ایجاد پست")}}</strong>
+                            <strong>{{__("ایجاد دسته بندی")}}</strong>
                         </h1>
+                     
                     </section>
                     <section class="my-4">
                         <div class="card">
